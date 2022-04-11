@@ -89,9 +89,9 @@ public class SortedListGUIRunner extends JFrame
         {
             boolean checkForFirstItem = false;
 
+            String entry = getNonZeroLenString("Enter a word to the list").toLowerCase(Locale.ROOT);
             //clears list before each entry
             orderedListTA.setText("");
-            String entry = getNonZeroLenString("Enter a word to the list").toLowerCase(Locale.ROOT);
 
             //if new entry isn't already in the list then add it
             if(!orderedList.contains(entry)) {
@@ -117,7 +117,6 @@ public class SortedListGUIRunner extends JFrame
             }
         });
         controlPnl.add(addListEntryBtn);
-
 
         searchListBtn = new JButton("Search List");
         searchListBtn.addActionListener((ActiveEvent_ae) ->
