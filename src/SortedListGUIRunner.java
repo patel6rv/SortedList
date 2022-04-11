@@ -5,6 +5,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
+import java.util.Scanner;
 
 public class SortedListGUIRunner extends JFrame
 {
@@ -60,7 +61,7 @@ public class SortedListGUIRunner extends JFrame
     private void createOrderedListPnl()
     {
         orderedListPnl = new JPanel();
-        orderedListPnl.setBorder(new TitledBorder(new EtchedBorder(), "Ordered List"));
+        orderedListPnl.setBorder(new TitledBorder(new EtchedBorder(), "Sorted List"));
         orderedListTA = new JTextArea(17,60);
         orderedListTA.setFont(new Font("monospaced", Font.PLAIN, 12));
         orderedListScroller = new JScrollPane(orderedListTA);
@@ -71,7 +72,7 @@ public class SortedListGUIRunner extends JFrame
     private void createSearchListPnl()
     {
         searchedListPnl = new JPanel();
-        searchedListPnl.setBorder(new TitledBorder(new EtchedBorder(), "Searched List"));
+        searchedListPnl.setBorder(new TitledBorder(new EtchedBorder(), "Search List"));
         searchedListTA = new JTextArea(17, 60);
         searchedListTA.setFont(new Font("monospaced", Font.PLAIN, 12));
         searchListScroller = new JScrollPane(searchedListTA);
@@ -90,20 +91,23 @@ public class SortedListGUIRunner extends JFrame
             boolean checkForFirstItem = false;
 
             String entry = getNonZeroLenString("Enter a word to the list").toLowerCase(Locale.ROOT);
-            //clears list before each entry
-            orderedListTA.setText("");
 
+            int index = 0;
             //if new entry isn't already in the list then add it
             if(!orderedList.contains(entry)) {
-                orderedList.add(entry);
+                index = getRangedInt("Please enter the index you would like to insert your word", 0, orderedList.size());
+                orderedList.add(index, entry);
             }
             else
             {
                 JOptionPane.showMessageDialog(null, "The word you want to add is already in the list");
             }
 
+            //clears list before each entry
+            orderedListTA.setText("");
+
             //sort list then display each word on a separate line
-            Collections.sort(orderedList);
+            //Collections.sort(orderedList);
             for (String s: orderedList)
             {
                 if (checkForFirstItem) {
@@ -191,6 +195,37 @@ public class SortedListGUIRunner extends JFrame
         }while(retString.length() == 0); // until we have some characters
 
         return retString;
+    }
 
+    public int getRangedInt(String prompt, int low, int high)
+    {
+        int retVal = 0;
+        String hold = "";
+        String trash = "";
+        boolean done = false;
+
+        do
+        {
+            hold = JOptionPane.showInputDialog(null, prompt + "[" + low + "-" + high + "]: ");
+            try
+            {
+                retVal = Integer.parseInt(hold);
+                if(retVal >= low && retVal <= high)
+                {
+                    done = true;
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null, "\nNumber is out of range [" + low + "-" + high + "]: " + retVal);
+                }
+            }
+            catch (NumberFormatException e)
+            {
+                trash = hold;
+                JOptionPane.showMessageDialog(null, "You must enter an int: " + trash);
+            }
+        }while(!done);
+
+        return retVal;
     }
 }
